@@ -1,0 +1,106 @@
+/* Global Responsive Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%; /* Prevent text resizing on iOS */
+}
+
+body {
+  margin: 0;
+  line-height: inherit;
+}
+
+img,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Navbar underline animation */
+.nav-link {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px; /* 2px spacing from top */
+  width: 0%;
+  height: 2px;
+  background-color: currentColor; /* Use current text color */
+  transition: width 0.3s ease-out;
+}
+
+.nav-link:hover::after,
+.active-nav-link::after {
+  width: 100%;
+}
+
+@keyframes infinite-scroll {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.animate-infinite-scroll {
+  animation: infinite-scroll 60s linear infinite; /* Fixed duration */
+}
+
+.animate-infinite-scroll:hover {
+  animation-play-state: paused;
+}
