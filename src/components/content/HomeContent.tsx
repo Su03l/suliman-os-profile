@@ -14,6 +14,7 @@ const roles = [
 
 export const HomeContent = () => {
   const [currentRole, setCurrentRole] = useState(0);
+  const [linesCount, setLinesCount] = useState(15); 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const codeRef = useRef<HTMLDivElement>(null);
 
@@ -24,7 +25,21 @@ export const HomeContent = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 🔵 Animate tech background (blue network)
+
+  useEffect(() => {
+    const updateLines = () => {
+      const width = window.innerWidth;
+
+      if (width < 640) setLinesCount(6); 
+      else if (width < 1024) setLinesCount(10); 
+      else setLinesCount(15); 
+    };
+
+    updateLines();
+    window.addEventListener("resize", updateLines);
+    return () => window.removeEventListener("resize", updateLines);
+  }, []);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -35,7 +50,6 @@ export const HomeContent = () => {
 
     const points: { x: number; y: number; vx: number; vy: number }[] = [];
 
-    // ✅ Increased to 110 points for more distributed lines
     for (let i = 0; i < 110; i++) {
       points.push({
         x: Math.random() * width,
@@ -49,7 +63,6 @@ export const HomeContent = () => {
       if (!ctx) return;
       ctx.clearRect(0, 0, width, height);
 
-      // Lines (light blue)
       ctx.strokeStyle = "rgba(37, 99, 235, 0.25)";
       ctx.lineWidth = 0.7;
       for (let i = 0; i < points.length; i++) {
@@ -66,7 +79,6 @@ export const HomeContent = () => {
         }
       }
 
-      // Points
       for (let p of points) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
@@ -94,7 +106,6 @@ export const HomeContent = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 💻 Floating code effect
   useEffect(() => {
     const codes = codeRef.current?.querySelectorAll(".code-line");
     if (codes) {
@@ -108,7 +119,7 @@ export const HomeContent = () => {
         });
       });
     }
-  }, []);
+  }, [linesCount]); 
 
   const socials = [
     {
@@ -149,30 +160,6 @@ export const HomeContent = () => {
     `console.log(["Frontend", "Backend", "Full-Stack"].join(" | "));`,
     `const user = { name: "Sam", age: 22 };`,
     `const sum = (a, b) => a + b;`,
-    `localStorage.setItem("theme", "dark");`,
-    `const isLoggedIn = true;`,
-    `try { JSON.parse("invalid"); } catch(e) { console.error(e); }`,
-    `new Promise(res => setTimeout(res, 1000));`,
-    `Array.from({length: 3}, (_, i) => i + 1);`,
-    `["JS","TS","React"].map(t => t.toLowerCase());`,
-    `Math.floor(Math.random() * 10);`,
-    `document.querySelector("#app");`,
-    `class Dev { constructor(n){ this.name=n; } }`,
-    `const date = new Date().toLocaleDateString();`,
-    `"Hello".toUpperCase();`,
-    `Object.keys({a:1,b:2,c:3});`,
-    `const double = n => n * 2;`,
-    `sessionStorage.clear();`,
-    `[1,2,3].filter(n => n % 2 === 0);`,
-    `const username = prompt("Enter your name:");`,
-    `Number.isInteger(42);`,
-    `"Full Stack Dev".split(" ");`,
-    `Math.max(5, 9, 2, 11);`,
-    `const apiURL = process.env.API_URL;`,
-    `await fetch("/users").then(r => r.json());`,
-    `window.scrollTo({ top: 0, behavior: "smooth" });`,
-    `setInterval(() => console.log("Tick"), 1000);`,
-    `const unique = [...new Set([1,1,2,3,3])];`,
   ];
 
   return (
@@ -182,12 +169,11 @@ export const HomeContent = () => {
         className="absolute inset-0 w-full h-full pointer-events-none z-0"
       />
 
-      {/* 💻 Floating code lines */}
       <div
         ref={codeRef}
         className="absolute inset-0 text-[11px] sm:text-xs font-mono text-blue-400/30 select-none overflow-hidden z-0"
       >
-        {Array.from({ length: 15 }).map((_, i) => (
+        {Array.from({ length: linesCount }).map((_, i) => (
           <div
             key={i}
             className="code-line absolute whitespace-nowrap"
