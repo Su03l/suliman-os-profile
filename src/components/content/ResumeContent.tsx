@@ -118,13 +118,25 @@ export const ResumeContent = () => {
               </p>
             </div>
             <div className="flex gap-2 sm:gap-3">
-              <a href="/SULIMANYOUSEF.pdf" target="_blank" rel="noopener noreferrer" className="px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-md text-xs sm:text-sm">
+              <a
+                href="/SULIMANYOUSEF.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-md text-xs sm:text-sm"
+              >
                 <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="inline sm:hidden">CV</span>
                 <span className="hidden sm:inline">View CV</span>
               </a>
-              <a href="/SULIMANYOUSEF.pdf" download className="px-3 sm:px-4 py-2 bg-white border-2 border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors flex items-center gap-2 shadow-md text-xs sm:text-sm">
+
+              <a
+                href="/SULIMANYOUSEF.pdf"
+                download
+                className="px-3 sm:px-4 py-2 bg-white border-2 border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors flex items-center gap-2 shadow-md text-xs sm:text-sm"
+              >
                 <Download className="w-3 h-3 sm:w-4 sm:h-4" />
-                Download
+                <span className="inline sm:hidden">DL</span>
+                <span className="hidden sm:inline">Download</span>
               </a>
             </div>
           </div>
