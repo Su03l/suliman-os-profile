@@ -14,7 +14,7 @@ const roles = [
 
 export const HomeContent = () => {
   const [currentRole, setCurrentRole] = useState(0);
-  const [linesCount, setLinesCount] = useState(15); 
+  const [linesCount, setLinesCount] = useState(12);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const codeRef = useRef<HTMLDivElement>(null);
 
@@ -25,14 +25,15 @@ export const HomeContent = () => {
     return () => clearInterval(interval);
   }, []);
 
-
+  // ✅ Lines count responsive fix
   useEffect(() => {
     const updateLines = () => {
       const width = window.innerWidth;
 
-      if (width < 640) setLinesCount(6); 
-      else if (width < 1024) setLinesCount(10); 
-      else setLinesCount(15); 
+      if (width < 640) setLinesCount(3); // Mobile
+      else if (width < 1024) setLinesCount(6); // Tablet
+      else if (width < 1600) setLinesCount(12); // Laptop
+      else setLinesCount(15); // Large Screens
     };
 
     updateLines();
@@ -40,6 +41,7 @@ export const HomeContent = () => {
     return () => window.removeEventListener("resize", updateLines);
   }, []);
 
+  // Canvas Background
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -50,12 +52,12 @@ export const HomeContent = () => {
 
     const points: { x: number; y: number; vx: number; vy: number }[] = [];
 
-    for (let i = 0; i < 110; i++) {
+    for (let i = 0; i < 90; i++) {
       points.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
       });
     }
 
@@ -63,14 +65,15 @@ export const HomeContent = () => {
       if (!ctx) return;
       ctx.clearRect(0, 0, width, height);
 
-      ctx.strokeStyle = "rgba(37, 99, 235, 0.25)";
-      ctx.lineWidth = 0.7;
+      ctx.strokeStyle = "rgba(37, 99, 235, 0.22)";
+      ctx.lineWidth = 0.6;
+
       for (let i = 0; i < points.length; i++) {
         for (let j = i + 1; j < points.length; j++) {
           const dx = points[i].x - points[j].x;
           const dy = points[i].y - points[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
+          if (dist < 110) {
             ctx.beginPath();
             ctx.moveTo(points[i].x, points[i].y);
             ctx.lineTo(points[j].x, points[j].y);
@@ -81,7 +84,7 @@ export const HomeContent = () => {
 
       for (let p of points) {
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
         ctx.fillStyle = "#2563EB";
         ctx.fill();
 
@@ -105,21 +108,6 @@ export const HomeContent = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  useEffect(() => {
-    const codes = codeRef.current?.querySelectorAll(".code-line");
-    if (codes) {
-      codes.forEach((el, i) => {
-        gsap.to(el, {
-          y: "-=100vh",
-          repeat: -1,
-          duration: 15 + i * 2,
-          ease: "none",
-          delay: i * 3,
-        });
-      });
-    }
-  }, [linesCount]); 
 
   const socials = [
     {
@@ -152,14 +140,11 @@ export const HomeContent = () => {
     `console.log("Hello World!");`,
     `const lang = "JavaScript";`,
     `function greet(name) { return "Hi " + name; }`,
+    `const sum = (a, b) => a + b;`,
     `let score = 100;`,
     `if(score > 50){ console.log("Passed"); }`,
     `const skills = ["React", "Next.js", "Node.js"];`,
     `fetch("/api/data").then(r => r.json());`,
-    `for(let i=0; i<5; i++){ console.log(i); }`,
-    `console.log(["Frontend", "Backend", "Full-Stack"].join(" | "));`,
-    `const user = { name: "Sam", age: 22 };`,
-    `const sum = (a, b) => a + b;`,
   ];
 
   return (
@@ -171,15 +156,15 @@ export const HomeContent = () => {
 
       <div
         ref={codeRef}
-        className="absolute inset-0 text-[11px] sm:text-xs font-mono text-blue-400/30 select-none overflow-hidden z-0"
+        className="absolute inset-0 text-[10px] sm:text-xs font-mono text-blue-400/25 select-none overflow-hidden z-0"
       >
         {Array.from({ length: linesCount }).map((_, i) => (
           <div
             key={i}
             className="code-line absolute whitespace-nowrap"
             style={{
-              top: `${i * 80}px`,
-              left: `${Math.random() * 95}%`,
+              top: `${i * 100}px`,
+              left: `${10 + Math.random() * 80}%`,
             }}
           >
             {codeSnippets[i % codeSnippets.length]}
